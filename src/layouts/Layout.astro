@@ -1,0 +1,41 @@
+---
+import '../styles/global.css';
+import { site } from '../config/site';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { withBase } from '../lib/paths';
+interface Props { title: string; description: string; noindex?: boolean; article?: boolean; canonicalPath?: string; }
+const {title,description,noindex=false,article=false,canonicalPath=Astro.url.pathname} = Astro.props;
+const canonical = Astro.site ? new URL(canonicalPath, Astro.site) : undefined;
+const socialImage = Astro.site ? new URL(withBase('/social-card.png'), Astro.site) : undefined;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="theme-color" content="#10101c"/>
+    <title>{title} | {site.name}</title>
+    <meta name="description" content={description}/>
+    {noindex && <meta name="robots" content="noindex, nofollow"/>}
+    {canonical && <link rel="canonical" href={canonical}/>}
+    <meta property="og:type" content={article ? 'article' : 'website'}/>
+    <meta property="og:title" content={`${title} | ${site.name}`}/>
+    <meta property="og:description" content={description}/>
+    <meta property="og:site_name" content={site.name}/>
+    {canonical && <meta property="og:url" content={canonical}/>}
+    {socialImage && <><meta property="og:image" content={socialImage}/><meta property="og:image:width" content="1200"/><meta property="og:image:height" content="630"/><meta property="og:image:alt" content={`${site.name} — Computer Science & Machine Learning`}/></>}
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:title" content={`${title} | ${site.name}`}/>
+    <meta name="twitter:description" content={description}/>
+    {socialImage && <meta name="twitter:image" content={socialImage}/>}
+    <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')}/>
+    <link rel="preload" href={withBase('/fonts/space-grotesk-latin.woff2')} as="font" type="font/woff2" crossorigin/>
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <Header/>
+    <main id="main-content"><slot/></main>
+    <Footer/>
+  </body>
+</html>

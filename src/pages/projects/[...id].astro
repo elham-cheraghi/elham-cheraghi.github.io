@@ -1,0 +1,15 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Icon from '../../components/Icon.astro';
+import ProjectVisual from '../../components/ProjectVisual.astro';
+import { withBase } from '../../lib/paths';
+export async function getStaticPaths(){return(await getCollection('projects')).map(project=>({params:{id:project.id},props:{project}}));}
+interface Props { project: CollectionEntry<'projects'>; }
+const {project}=Astro.props;
+const {Content}=await render(project);
+---
+<Layout title={project.data.title} description={project.data.description}>
+  <article class="container detail-page"><a class="text-link back-link" href={withBase('/projects/')}><span aria-hidden="true">←</span> All projects</a><div class="detail-heading"><span class="eyebrow">{project.data.category}{project.data.year&&` · ${project.data.year}`}</span><h1>{project.data.title}<span class="accent">.</span></h1><p>{project.data.description}</p><ul class="tags">{project.data.technologies.map(t=><li>{t}</li>)}</ul></div><ProjectVisual visual={project.data.visual} large/><div class="article-layout"><aside><span class="eyebrow">PROJECT LINKS</span><div class="article-links">{project.data.repository&&<a href={project.data.repository} class="text-link" target="_blank" rel="noopener noreferrer"><Icon name="github" size={18}/>Source code<Icon name="diagonal" size={14}/></a>}{project.data.demo&&<a href={project.data.demo} class="text-link" target="_blank" rel="noopener noreferrer">Live demo <Icon name="diagonal" size={14}/></a>}</div></aside><div class="prose"><Content/></div></div><div class="detail-bottom"><a href={withBase('/projects/')} class="button button-secondary">Explore other projects <Icon name="arrow" size={17}/></a></div></article>
+</Layout>

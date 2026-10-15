@@ -1,0 +1,12 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ProjectVisual from './ProjectVisual.astro';
+import Icon from './Icon.astro';
+import { withBase } from '../lib/paths';
+interface Props { project: CollectionEntry<'projects'>; }
+const {project}=Astro.props;
+---
+<article class="project-card">
+  <a class="project-image-link" href={withBase(`/projects/${project.id}/`)} aria-label={`Read about ${project.data.title}`} tabindex="-1"><ProjectVisual visual={project.data.visual}/></a>
+  <div class="project-card-body"><span class="eyebrow project-category">{project.data.category}</span><h3><a href={withBase(`/projects/${project.id}/`)}>{project.data.title}<Icon name="diagonal" size={18}/></a></h3><p>{project.data.description}</p><ul class="tags" aria-label="Technologies">{project.data.technologies.map(t=><li>{t}</li>)}</ul></div>
+</article>

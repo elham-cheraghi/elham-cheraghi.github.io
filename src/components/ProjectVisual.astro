@@ -1,0 +1,28 @@
+---
+interface Props { visual?: string; large?: boolean; }
+const {visual='pathways',large=false}=Astro.props;
+const nodes = [[45,103],[92,55],[105,145],[157,90],[203,43],[212,154],[260,105],[307,58],[322,147],[365,93]];
+---
+<div class:list={['project-visual',`visual-${visual}`,{large}]} aria-hidden="true">
+  <span class="visual-corner">{visual==='pathways'?'01 / NEURAL SYSTEMS':visual==='search'?'02 / SEARCH SPACE':visual==='sensors'?'03 / OPTIMIZATION':'04 / LOGIC & INFERENCE'}</span>
+  <svg viewBox="0 0 410 200" fill="none">
+    {visual==='pathways' ? <>
+      <g stroke="currentColor" stroke-width="1" opacity=".35">{nodes.flatMap((p,i)=>nodes.slice(i+1).filter(q=>Math.hypot(p[0]-q[0],p[1]-q[1])<112).map(q=><line x1={p[0]} y1={p[1]} x2={q[0]} y2={q[1]}/>))}</g>
+      {nodes.map((p,i)=><><circle cx={p[0]} cy={p[1]} r={i===3||i===6?12:7} fill="var(--visual-bg)" stroke="currentColor" opacity={i===3||i===6?1:.5}/><circle cx={p[0]} cy={p[1]} r="2.5" fill="currentColor"/></>)}
+      <circle cx="157" cy="90" r="21" stroke="currentColor" stroke-dasharray="2 5" opacity=".3"/>
+      <circle cx="260" cy="105" r="22" stroke="currentColor" stroke-dasharray="2 5" opacity=".3"/>
+    </> : visual==='search' || visual==='logic' ? <>
+      <g stroke="currentColor" opacity=".14">{Array.from({length:10},(_,i)=><line x1={54+i*34} y1="36" x2={54+i*34} y2="172"/>)}{Array.from({length:5},(_,i)=><line x1="54" y1={36+i*34} x2="360" y2={36+i*34}/>)}</g>
+      {[[156,70],[190,70],[224,104],[122,138],[292,36],[292,138]].map(p=><rect x={p[0]} y={p[1]} width="33" height="33" fill="currentColor" opacity=".12"/>)}
+      <path d="M71 155H105V121H139V87H139V53H241V87H275V121H343" stroke="currentColor" stroke-width="2" stroke-dasharray={visual==='logic'?'4 4':undefined} opacity=".8"/>
+      <circle cx="71" cy="155" r="5" fill="var(--visual-bg)" stroke="currentColor"/><circle cx="343" cy="121" r="5" fill="currentColor"/>
+      <circle cx="343" cy="121" r="12" stroke="currentColor" opacity=".25"/>
+    </> : <>
+      <g stroke="currentColor" opacity=".18">{[[130,88],[228,112],[302,75]].map(p=><><circle cx={p[0]} cy={p[1]} r="28"/><circle cx={p[0]} cy={p[1]} r="52"/><circle cx={p[0]} cy={p[1]} r="75" stroke-dasharray="2 4"/></>)}</g>
+      <path d="m130 88 98 24 74-37" stroke="currentColor" opacity=".6"/>
+      {[[130,88],[228,112],[302,75]].map(p=><><circle cx={p[0]} cy={p[1]} r="5" fill="currentColor"/><circle cx={p[0]} cy={p[1]} r="10" stroke="currentColor" opacity=".6"/></>)}
+      {[[85,129],[182,61],[256,157],[328,128],[202,149],[268,55]].map(p=><circle cx={p[0]} cy={p[1]} r="2" fill="currentColor" opacity=".5"/>)}
+    </>}
+  </svg>
+  <span class="visual-cross">+</span>
+</div>

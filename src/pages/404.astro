@@ -1,0 +1,7 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import {site} from '../config/site';
+import {withBase} from '../lib/paths';
+---
+<Layout title="Page not found" description={`This page could not be found. Return to ${site.name}’s home page or explore the project collection.`} canonicalPath={withBase('/404.html')} noindex><section class="container not-found"><span class="error-number" aria-hidden="true">404<span class="accent">.</span></span><span class="eyebrow">A SMALL DETOUR</span><h1>This path leads somewhere else.</h1><p>The page may have moved, or the address may be incomplete.<br/>There’s still plenty to explore.</p><div class="hero-actions"><a class="button button-primary" href={withBase('/')}>Back to home <Icon name="arrow" size={17}/></a><a class="button button-secondary" href={withBase('/projects/')}>Explore projects <Icon name="diagonal" size={17}/></a></div></section></Layout>

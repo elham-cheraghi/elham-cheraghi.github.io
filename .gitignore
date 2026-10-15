@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+!.env.example
+.DS_Store
+*.log
+
+# Keep original CV sources local; only the reviewed public PDF is deployed.
+/cv-eli.pdf
+/cv-eli.tex

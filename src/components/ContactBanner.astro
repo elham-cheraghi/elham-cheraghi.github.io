@@ -1,0 +1,5 @@
+---
+import { site } from '../config/site';
+import Icon from './Icon.astro';
+---
+<section class="contact-banner container" aria-labelledby="contact-banner-heading"><div><span class="eyebrow">HAVE SOMETHING IN MIND?</span><h2 id="contact-banner-heading">Let’s connect the dots<span class="accent">.</span></h2><p>A question, an idea, or a shared curiosity. My inbox is open.</p></div><a class="round-link" href={`mailto:${site.email}`} aria-label={`Email ${site.name}`}><Icon name="diagonal" size={29}/></a></section>

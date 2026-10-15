@@ -1,0 +1,11 @@
+---
+import {getCollection,render} from 'astro:content';
+import type {CollectionEntry} from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import {withBase,formatDate} from '../../lib/paths';
+export async function getStaticPaths(){return(await getCollection('blog',({data})=>import.meta.env.DEV||!data.draft)).map(post=>({params:{id:post.id},props:{post}}));}
+interface Props {post:CollectionEntry<'blog'>;}
+const {post}=Astro.props;
+const {Content}=await render(post);
+---
+<Layout title={post.data.title} description={post.data.description} article noindex={post.data.draft}><article class="container blog-article detail-page"><a class="text-link back-link" href={withBase('/blog/')}><span aria-hidden="true">←</span> All notes</a>{post.data.draft&&<p class="draft-notice">Example draft — visible only in local development. This page is excluded from the production build.</p>}<header class="detail-heading"><time class="eyebrow" datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time><h1>{post.data.title}</h1><p>{post.data.description}</p><ul class="tags">{post.data.tags.map(tag=><li>{tag}</li>)}</ul></header><div class="prose"><Content/></div></article></Layout>

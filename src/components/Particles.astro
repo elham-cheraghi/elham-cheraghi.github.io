@@ -1,0 +1,44 @@
+---
+const points = [[25,60],[100,115],[178,40],[245,160],[360,90],[415,240],[75,330],[170,420],[300,355],[385,490],[505,420],[600,520],[720,420],[805,510],[940,420],[1050,510],[1145,390],[1280,460],[1370,320],[1260,180],[1380,60],[1150,90],[1040,215],[930,115],[790,170],[660,70],[540,145]];
+const lines = points.flatMap((p,i) => points.slice(i+1).filter(q => Math.hypot(p[0]-q[0],p[1]-q[1])<170).map(q => ({p,q})));
+---
+<div class="particles" aria-hidden="true">
+  <svg class="particle-fallback" viewBox="0 0 1440 600" preserveAspectRatio="xMidYMid slice"><g stroke="currentColor" stroke-width="0.6" opacity="0.28">{lines.map(({p,q})=><line x1={p[0]} y1={p[1]} x2={q[0]} y2={q[1]}/>)}</g><g fill="currentColor">{points.map(p=><circle cx={p[0]} cy={p[1]} r="1.7"/>)}</g></svg>
+  <canvas></canvas>
+</div>
+<script>
+  const container = document.querySelector<HTMLElement>('.particles');
+  const canvas = container?.querySelector('canvas');
+  const ctx = canvas?.getContext('2d');
+  if (container && canvas && ctx) {
+    const motion = matchMedia('(prefers-reduced-motion: reduce)');
+    let width = 0, height = 0, frame = 0, visible = false, last = 0;
+    let points: {x:number;y:number;vx:number;vy:number}[] = [];
+    function size() {
+      width = container!.clientWidth; height = container!.clientHeight;
+      const dpr = Math.min(devicePixelRatio || 1, 2);
+      canvas!.width = width*dpr; canvas!.height = height*dpr;
+      ctx!.setTransform(dpr,0,0,dpr,0,0);
+      points = Array.from({length:width<640?22:48},()=>({x:Math.random()*width,y:Math.random()*height,vx:(Math.random()-.5)*.13,vy:(Math.random()-.5)*.13}));
+      draw(false); container!.dataset.ready='true';
+    }
+    function draw(move: boolean) {
+      ctx!.clearRect(0,0,width,height);
+      points.forEach((p,i)=>{
+        if(move){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>width)p.vx*=-1;if(p.y<0||p.y>height)p.vy*=-1;}
+        ctx!.fillStyle='rgba(187,178,225,.48)';ctx!.beginPath();ctx!.arc(p.x,p.y,1.5,0,Math.PI*2);ctx!.fill();
+        for(let j=i+1;j<points.length;j++){
+          const q=points[j], distance=Math.hypot(p.x-q.x,p.y-q.y);
+          if(distance<145){ctx!.strokeStyle=`rgba(170,155,214,${(1-distance/145)*.17})`;ctx!.lineWidth=.7;ctx!.beginPath();ctx!.moveTo(p.x,p.y);ctx!.lineTo(q.x,q.y);ctx!.stroke();}
+        }
+      });
+    }
+    function tick(time:number){if(time-last>32){draw(true);last=time;}frame=requestAnimationFrame(tick);}
+    function update(){cancelAnimationFrame(frame);if(visible&&!document.hidden&&!motion.matches)frame=requestAnimationFrame(tick);else draw(false);}
+    new ResizeObserver(size).observe(container);
+    new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;update();}).observe(container);
+    document.addEventListener('visibilitychange',update);
+    motion.addEventListener('change',update);
+    size();
+  }
+</script>

@@ -1,0 +1,31 @@
+---
+import { site } from '../config/site';
+import { withBase } from '../lib/paths';
+import Icon from './Icon.astro';
+const current = Astro.url.pathname.replace(/\/$/, '');
+---
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href={withBase('/')} aria-label={`${site.name} — home`}><span class="monogram" aria-hidden="true">{site.initials.toLowerCase()}<span>.</span></span><span class="brand-name">{site.name}</span></a>
+    <nav class="desktop-nav" aria-label="Main navigation">
+      {site.navigation.map(({label, href}) => <a href={withBase(href)} aria-current={current === withBase(href).replace(/\/$/, '') ? 'page' : undefined}>{label}</a>)}
+    </nav>
+    <a class="header-contact" href={withBase('/contact/')}>Let’s talk <Icon name="diagonal" size={15}/></a>
+    <details class="mobile-menu">
+      <summary aria-label="Toggle navigation menu"><span class="menu-label">Menu</span><span class="menu-lines" aria-hidden="true"><i></i><i></i></span></summary>
+      <nav aria-label="Mobile navigation">{site.navigation.map(({label, href}) => <a href={withBase(href)} aria-current={current === withBase(href).replace(/\/$/, '') ? 'page' : undefined}>{label}<Icon name="diagonal" size={16}/></a>)}<a href={withBase('/contact/')}>Let’s talk <Icon name="diagonal" size={16}/></a></nav>
+    </details>
+  </div>
+</header>
+<script>
+  const menu = document.querySelector<HTMLDetailsElement>('.mobile-menu');
+  if (menu) {
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && menu.open) { menu.open = false; menu.querySelector('summary')?.focus(); }
+    });
+    document.addEventListener('click', (event) => {
+      if (event.target instanceof Node && !menu.contains(event.target)) menu.open = false;
+    });
+    menu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => { menu.open = false; }));
+  }
+</script>

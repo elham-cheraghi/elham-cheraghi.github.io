@@ -1,0 +1,12 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import PageHeading from '../../components/PageHeading.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import ContactBanner from '../../components/ContactBanner.astro';
+import { site } from '../../config/site';
+const projects=(await getCollection('projects')).sort((a,b)=>a.data.order-b.data.order);
+---
+<Layout title="Projects" description={`Explore ${site.name}’s projects in neural pathway ranking, dynamic search algorithms, sensor placement optimization, and logic-based AI.`}>
+  <div class="container projects-page"><PageHeading eyebrow="A COLLECTION OF QUESTIONS, EXPLORED" title="Projects & research" description="Experiments in machine learning, optimization, and intelligent systems. From the first question to working code."/><div class="project-list-heading"><span class="eyebrow">ALL PROJECTS</span><span class="project-count">{String(projects.length).padStart(2,'0')} projects</span></div><div class="projects-grid project-list">{projects.map(project=><ProjectCard project={project}/>)}</div></div><ContactBanner/>
+</Layout>
