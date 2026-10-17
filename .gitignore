@@ -7,6 +7,6 @@ dist/
 .DS_Store
 *.log
 
-# Keep original CV sources local; only the reviewed public PDF is deployed.
+# Original CV sources stay local; only the public PDF is deployed.
 /cv-eli.pdf
 /cv-eli.tex

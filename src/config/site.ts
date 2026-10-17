@@ -24,7 +24,7 @@ export interface SiteConfig {
   }[];
 }
 
-// Public profile details follow the supplied CV; the display name was confirmed separately.
+// Profile details used across the site.
 export const site: SiteConfig = {
   name: 'Elham Cheraghi',
   firstName: 'Elham',

@@ -8,7 +8,6 @@ export interface Experience {
   href?: string;
 }
 
-// Dates and responsibilities follow the supplied CV.
 export const experience: Experience[] = [
   {
     title: 'Teaching Assistant',
