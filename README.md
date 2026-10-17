@@ -12,7 +12,7 @@ Computer science · machine learning · search and optimization
 
 <br>
 
-[Visit the site](https://elham-cheraghi.github.io/portfolio/) &nbsp;·&nbsp; [Projects](https://elham-cheraghi.github.io/portfolio/projects/) &nbsp;·&nbsp; [Curriculum vitae](https://elham-cheraghi.github.io/portfolio/cv/) &nbsp;·&nbsp; [Get in touch](https://elham-cheraghi.github.io/portfolio/contact/)
+[Visit the site](https://elham-cheraghi.github.io/) &nbsp;·&nbsp; [Projects](https://elham-cheraghi.github.io/projects/) &nbsp;·&nbsp; [Curriculum vitae](https://elham-cheraghi.github.io/cv/) &nbsp;·&nbsp; [Get in touch](https://elham-cheraghi.github.io/contact/)
 
 <br>
 
@@ -173,7 +173,7 @@ Blog posts take a `title`, `description`, `pubDate`, and optional `tags`. Set `d
 
 Every push to `main` runs the workflow in `.github/workflows/deploy.yml`. It type-checks, builds, verifies the output, and publishes to GitHub Pages.
 
-The site URL and base path are worked out from the repository name, so the same code works at `username.github.io/portfolio/` or at the root of a custom domain. For a custom domain, set two repository variables under **Settings → Secrets and variables → Actions**:
+The site URL and base path are worked out from the repository name, so the same code works in a `username.github.io` repository (served at the root), in a project repository (served under `/repository-name/`), or on a custom domain. For a custom domain, set two repository variables under **Settings → Secrets and variables → Actions**:
 
 ```bash
 PUBLIC_SITE_URL=https://www.example.com
